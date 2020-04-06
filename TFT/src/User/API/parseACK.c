@@ -367,7 +367,7 @@ void parseACK(void)
             goto parse_end;
           }
         }
-        BUZZER_PLAY(sound_notify);
+        //BUZZER_PLAY(sound_notify);
         ackPopupInfo(echomagic);
       }
     }
