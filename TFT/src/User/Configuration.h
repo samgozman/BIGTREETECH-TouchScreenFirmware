@@ -75,7 +75,7 @@
  *  Options:  0: Disabled. RECOMMENDED FOR TFT24
  *            1: Enabled Marlin Fullscreen mode.
  */
-#define DEFAULT_ST7920_FULLSCREEN_MODE 0 // 0: Disabled. RECOMMENDED FOR TFT24
+#define DEFAULT_ST7920_FULLSCREEN_MODE 1 // 0: Disabled. RECOMMENDED FOR TFT24
 
 /**
  * Clean Mode Switching Support
@@ -86,7 +86,7 @@
  *
  * *** ONLY SUPPORTED ON TFT24 V1.1, TFT35 V3.0, AND TFT28 V3.0 ***
  */
-//#define CLEAN_MODE_SWITCHING_SUPPORT  // Enable CLEAN MODE SWITCHING SUPPORT
+#define CLEAN_MODE_SWITCHING_SUPPORT  // Enable CLEAN MODE SWITCHING SUPPORT
 
 //===========================================================================
 //========================== Touch Mode Settings ============================
@@ -101,7 +101,7 @@
  *
  * :[2400, 9600, 19200, 38400, 57600, 115200, 250000, 500000, 1000000]
  */
-#define BAUDRATE 115200
+#define BAUDRATE 250000
 
 /**
  * Default Touch Mode Language
@@ -164,9 +164,9 @@
 #define AXIS_DISPLAY_ID  {"X",  "Y",  "Z",   "E",  "E2"}
 
 // Default move speed mm/min
-#define DEFAULT_SPEED_MOVE      3000
+#define DEFAULT_SPEED_MOVE      2500
 #define SPEED_MOVE_SLOW         1000
-#define SPEED_MOVE_FAST         4000
+#define SPEED_MOVE_FAST         3000
 
 // Extrude speed mm/min
 #define EXTRUDE_SLOW_SPEED      60
@@ -187,8 +187,8 @@
 #define NOZZLE_PAUSE_X_POSITION     (X_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Y_POSITION     (Y_MIN_POS + 10)  // (mm) Must be an integer
 #define NOZZLE_PAUSE_Z_RAISE        20   // (mm)
-#define NOZZLE_PAUSE_E_FEEDRATE     3000 // (mm/min) retract & purge feedrate
-#define NOZZLE_PAUSE_XY_FEEDRATE    3000 // (mm/min) X and Y axes feedrate
+#define NOZZLE_PAUSE_E_FEEDRATE     2000 // (mm/min) retract & purge feedrate
+#define NOZZLE_PAUSE_XY_FEEDRATE    2000 // (mm/min) X and Y axes feedrate
 #define NOZZLE_PAUSE_Z_FEEDRATE     600  // (mm/min) Z axis feedrate
 
 /**
@@ -203,17 +203,17 @@
  * Manual Leveling
  * Move to four corner points to Leveling manually (Point 1, Point 2, Point 3, Point 4)
  */
-#define LEVELING_POINT_1_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_1_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_2_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_2_Y         (Y_MIN_POS + 20)
-#define LEVELING_POINT_3_X         (X_MAX_POS - 20)
-#define LEVELING_POINT_3_Y         (Y_MAX_POS - 20)
-#define LEVELING_POINT_4_X         (X_MIN_POS + 20)
-#define LEVELING_POINT_4_Y         (Y_MAX_POS - 20)
+#define LEVELING_POINT_1_X         (X_MIN_POS + 40)
+#define LEVELING_POINT_1_Y         (Y_MIN_POS + 40)
+#define LEVELING_POINT_2_X         (X_MAX_POS - 40)
+#define LEVELING_POINT_2_Y         (Y_MIN_POS + 40)
+#define LEVELING_POINT_3_X         (X_MAX_POS - 40)
+#define LEVELING_POINT_3_Y         (Y_MAX_POS - 40)
+#define LEVELING_POINT_4_X         (X_MIN_POS + 40)
+#define LEVELING_POINT_4_Y         (Y_MAX_POS - 40)
 #define LEVELING_POINT_Z           0.2f  // Z-axis position when nozzle stays for leveling
 #define LEVELING_POINT_MOVE_Z      10.0f // Z-axis position when nozzle move to next point
-#define LEVELING_POINT_XY_FEEDRATE 3000  // (mm/min) X and Y axes move feedrate
+#define LEVELING_POINT_XY_FEEDRATE 2000  // (mm/min) X and Y axes move feedrate
 #define LEVELING_POINT_Z_FEEDRATE  600   // (mm/min) Z axis move feedrate
 
 // Power Supply
