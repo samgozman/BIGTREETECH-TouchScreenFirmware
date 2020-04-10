@@ -41,6 +41,7 @@ void menuAutoLeveling(void)
         storeCmd("M280 P0 S120\n");
         break;
       case KEY_ICON_4:
+        storeCmd("G28\n");
         storeCmd("M48\n");
         break;
       case KEY_ICON_5:
@@ -81,7 +82,7 @@ void moveToLevelingPoint(u8 point)
     {LEVELING_POINT_3_X, LEVELING_POINT_3_Y},
     {LEVELING_POINT_4_X, LEVELING_POINT_4_Y},
   };
-  if(coordinateIsClear() == false)
+  if(coordinateIsKnown() == false)
   {
     storeCmd("G28\n");
   }
