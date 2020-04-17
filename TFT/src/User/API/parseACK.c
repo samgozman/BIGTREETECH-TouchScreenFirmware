@@ -10,7 +10,6 @@ const char *const ignoreEcho[] = {
   "busy: processing",
   "Now fresh file:",
   "Probe Z Offset:",
-  "paused for user",
   "Flow:",
   "echo:;",
   "echo:  G",
@@ -114,7 +113,7 @@ void parseACK(void)
 
     if(infoHost.connected == false) //not connected to Marlin
     {
-      if((!ack_seen("T:") && !ack_seen("T0:")) || !ack_seen("ok"))  goto parse_end;  //the first response should be such as "T:25/50 ok\n"
+      if(!ack_seen("T:") && !ack_seen("T0:"))  goto parse_end;  //the first response should be such as "T:25/50\n"
         updateNextHeatCheckTime();
         infoHost.connected = true;
         storeCmd("M115\n");
@@ -167,29 +166,29 @@ void parseACK(void)
       if(ack_seen("ok"))
       {
         infoHost.wait = false;
-    //parse temperature
-        if(ack_seen("T:") || ack_seen("T0:"))
+      }
+      // parse temperature
+      if(ack_seen("T:") || ack_seen("T0:"))
+      {
+        TOOL i = heatGetCurrentToolNozzle();
+        heatSetCurrentTemp(i, ack_value()+0.5);
+        if(!heatGetSendWaiting(i)){
+          heatSyncTargetTemp(i, ack_second_value()+0.5);
+        }
+        for(TOOL i = BED; i < HEATER_NUM; i++)
         {
-          TOOL i = heatGetCurrentToolNozzle();
-          heatSetCurrentTemp(i, ack_value()+0.5);
-          if(!heatGetSendWaiting(i)){
-            heatSyncTargetTemp(i, ack_second_value()+0.5);
-          }
-          for(TOOL i = BED; i < HEATER_NUM; i++)
+          if(ack_seen(toolID[i]))
           {
-            if(ack_seen(toolID[i]))
-            {
-              heatSetCurrentTemp(i, ack_value()+0.5);
-              if(!heatGetSendWaiting(i)) {
-                heatSyncTargetTemp(i, ack_second_value()+0.5);
-              }
+            heatSetCurrentTemp(i, ack_value()+0.5);
+            if(!heatGetSendWaiting(i)) {
+              heatSyncTargetTemp(i, ack_second_value()+0.5);
             }
           }
-          avoid_terminal = infoSettings.terminalACK;
-          updateNextHeatCheckTime();
         }
+        avoid_terminal = infoSettings.terminalACK;
+        updateNextHeatCheckTime();
       }
-      if(ack_seen("X:") && ack_index == 2)
+      else if(ack_seen("X:") && ack_index == 2)
       {
         storegantry(0, ack_value());
         if (ack_seen("Y:"))
@@ -352,6 +351,10 @@ void parseACK(void)
       {
         speedSetPercent(1,ack_value());
       }
+      else if(ack_seen("paused for user"))
+      {
+        popupPauseForUser();
+      }
     //Parse error messages & Echo messages
       else if(ack_seen(errormagic))
       {
@@ -407,8 +410,11 @@ void parseRcvGcode(void)
       if(i != SERIAL_PORT && infoHost.rx_ok[i] == true)
       {
         infoHost.rx_ok[i] = false;
-        syncL2CacheFromL1(i);
-        storeCmdFromUART(i, dmaL2Cache);
+        while(dmaL1NotEmpty(i))
+        {
+          syncL2CacheFromL1(i);
+          storeCmdFromUART(i, dmaL2Cache);
+        }
       }
     }
   #endif
